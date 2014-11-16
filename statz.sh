@@ -1,20 +1,23 @@
 #!/usr/bin/env bash
 
-echo '  _____ _        _       ______'
-echo ' / ____| |      | |     |___  /'
-echo '| (___ | |_ __ _| |_ ___   / / '
-echo ' \___ \| __/ _` | __/ __| / /  '
-echo ' ____) | || (_| | |_\__ \/ /__ '
-echo '|_____/ \__\__,_|\__|___/_____|'
-echo
+# echo '  _____ _        _       ______'
+# echo ' / ____| |      | |     |___  /'
+# echo '| (___ | |_ __ _| |_ ___   / / '
+# echo ' \___ \| __/ _` | __/ __| / /  '
+# echo ' ____) | || (_| | |_\__ \/ /__ '
+# echo '|_____/ \__\__,_|\__|___/_____|'
+# echo
+
+PROG_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+DATA_DIR=$PROG_DIR/data
+mkdir -p $DATA_DIR
+LOG=$PROG_DIR/log.txt
 
 info() {
-    echo "INFO - " $1
+    echo "INFO - " $1 >> $LOG
 }
 
-DATA_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-DATA_DIR=$DATA_DIR/data
-mkdir -p $DATA_DIR
+info "Launched at `date`"
 info "Using '$DATA_DIR' as data directory"
 
 BUCKET=$1
@@ -29,8 +32,13 @@ info "Instructions: $INSTRUCTIONS"
 
 RESULT=`mktemp /tmp/XXXXXXXX`
 
-mean() {
-    awk '{mean += $1} END {print "mean = " mean/NR;}' $1 >> $2
+stats() {
+    sort -n $1 | awk 'BEGIN{c=0;sum=0;}\
+        /^[^#]/{a[c++]=$1;sum+=$1;}\
+        END{ave=sum/c;\
+        if((c%2)==1){median=a[int(c/2)];}\
+        else{median=(a[c/2]+a[c/2-1])/2;}\
+        print "{\"count\":",c,", \"mean\":",ave,", \"median\":",median,", \"min\":",a[0],", \"max\":",a[c-1],"}"}' >> $2
 }
 
 last_n() {
@@ -40,12 +48,12 @@ last_n() {
     touch $DATA_FILE
 
     echo "Before new value" >> $RESULT
-    mean $DATA_FILE $RESULT
+    stats $DATA_FILE $RESULT
     
     echo $3 >> $DATA_FILE
     
     echo "After new value" >> $RESULT
-    mean $DATA_FILE $RESULT
+    stats $DATA_FILE $RESULT
 }
 
 d7m5() {
@@ -57,13 +65,15 @@ d7m5() {
     info "Data file: $DATA_FILE"
     touch $DATA_FILE
 
-    echo "Before new value" >> $RESULT
-    mean $DATA_FILE $RESULT
+    echo "{ \"before\": " >> $RESULT
+    stats $DATA_FILE $RESULT
+    echo "," >> $RESULT
     
     echo $3 >> $DATA_FILE
     
-    echo "After new value" >> $RESULT
-    mean $DATA_FILE $RESULT
+    echo " \"after\": " >> $RESULT
+    stats $DATA_FILE $RESULT
+    echo "}" >> $RESULT
 }
 
 case $INSTRUCTIONS in
@@ -80,5 +90,10 @@ case $INSTRUCTIONS in
         exit 1
 esac
 
-cat $RESULT
+if hash jq 2>/dev/null; then
+    cat $RESULT | jq .
+else
+    cat $RESULT
+fi
+
 rm $RESULT
