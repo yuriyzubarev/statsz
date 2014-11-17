@@ -33,12 +33,17 @@ info "Instructions: $INSTRUCTIONS"
 RESULT=`mktemp /tmp/XXXXXXXX`
 
 stats() {
-    sort -n $1 | awk 'BEGIN{c=0;sum=0;}\
-        /^[^#]/{a[c++]=$1;sum+=$1;}\
-        END{ave=sum/c;\
-        if((c%2)==1){median=a[int(c/2)];}\
-        else{median=(a[c/2]+a[c/2-1])/2;}\
-        print "{\"count\":",c,", \"mean\":",ave,", \"median\":",median,", \"min\":",a[0],", \"max\":",a[c-1],"}"}' >> $2
+    if [ -s $1 ] 
+    then
+        sort -n $1 | awk 'BEGIN{c=0;sum=0;}\
+            /^[^#]/{a[c++]=$1;sum+=$1;}\
+            END{ave=sum/c;\
+            if((c%2)==1){median=a[int(c/2)];}\
+            else{median=(a[c/2]+a[c/2-1])/2;}\
+            print "{\"count\":",c,", \"mean\":",ave,", \"median\":",median,", \"min\":",a[0],", \"max\":",a[c-1],"}"}' >> $2
+    else
+        echo "{ \"count\": 0 }" >> $2
+    fi
 }
 
 last_n() {
