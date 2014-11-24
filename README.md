@@ -25,3 +25,5 @@ http://stackoverflow.com/questions/9789806/command-line-utility-to-print-statist
 
 http://en.wikipedia.org/wiki/Seven-number_summary
 
+http://www.acmesystems.it/python_httpserver
+http://pymotw.com/2/BaseHTTPServer/
