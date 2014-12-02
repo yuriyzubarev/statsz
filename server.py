@@ -9,7 +9,7 @@ class GetHandler(BaseHTTPRequestHandler):
         query = parsed_path.query
         params = dict(urlparse.parse_qsl(query))
 
-        bashCommand = "./statz.sh " + params["name"] + " " + params["value"] + " " + params["datetime"] + " d-7_5m"
+        bashCommand = "./statsz.sh " + params["name"] + " " + params["value"] + " " + params["datetime"] + " d-7_5m"
         process = subprocess.Popen(bashCommand.split(), stdout = subprocess.PIPE)
 
         output = process.communicate()[0]
