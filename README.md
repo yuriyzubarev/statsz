@@ -1,17 +1,17 @@
 StatsZ
 =====
 
-A network daemon listens for numbers and responds with statistics.
+HTTP server that consumes numbers at preset intervals and returns summary statistics.
 
 Inspiration
 -----------
 
-StatsZ is inspired by StatsD and the need not only to aggregate and plot data but also to learn about its properties.
+Inspired by a need to make sense of constant stream of hundreads of measurements, and do it in automated and self adjusting way. The name is inspired by StatsD.
 
 Status
 ------
 
-This is a **prototype**.
+This is a **prototype**. Hence Bash, AWK and 20 Python lines server.
 
 > A prototype is an early sample, model, or release of a product built to test a concept or process or to act as a thing to be replicated or learned from.
 
