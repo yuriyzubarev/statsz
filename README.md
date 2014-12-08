@@ -11,7 +11,7 @@ Inspired by a need to make sense of constant stream of hundreads of measurements
 Status
 ------
 
-This is a **prototype**. Hence Bash, AWK and 20 Python lines server.
+This is a **prototype**. Hence Bash, AWK and 20-Python-lines server.
 
 > A prototype is an early sample, model, or release of a product built to test a concept or process or to act as a thing to be replicated or learned from.
 
