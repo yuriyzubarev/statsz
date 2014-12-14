@@ -21,7 +21,7 @@ Usage
     1. git clone ...
     2. cd statsz
     3. python server.py
-    4. http://localhost:8080/?name=foo&value=7&datetime=1416854891
+    4. https://localhost:8083/?name=foo&value=7&datetime=1416854891
 
 response
 
@@ -46,7 +46,7 @@ response
     
 ... repeat
 
-    5. http://localhost:8080/?name=foo&value=7&datetime=1416854891
+    5. https://localhost:8083/?name=foo&value=7&datetime=1416854891
 
 response
 
@@ -91,3 +91,6 @@ http://stackoverflow.com/questions/9789806/command-line-utility-to-print-statist
 http://www.acmesystems.it/python_httpserver
 
 http://pymotw.com/2/BaseHTTPServer/
+
+http://www.piware.de/2011/01/creating-an-https-server-in-python/
+

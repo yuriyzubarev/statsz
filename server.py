@@ -1,6 +1,7 @@
 from BaseHTTPServer import BaseHTTPRequestHandler
 import urlparse
 import subprocess
+import ssl
 
 class GetHandler(BaseHTTPRequestHandler):
     
@@ -21,6 +22,7 @@ class GetHandler(BaseHTTPRequestHandler):
 
 if __name__ == '__main__':
     from BaseHTTPServer import HTTPServer
-    server = HTTPServer(('localhost', 8080), GetHandler)
+    server = HTTPServer(('localhost', 8083), GetHandler)
+    server.socket = ssl.wrap_socket (server.socket, certfile='zserver.pem', server_side=True)
     print 'Starting server, use <Ctrl-C> to stop'
     server.serve_forever()
