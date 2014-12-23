@@ -42,6 +42,7 @@ stats() {
 }
 
 last_n() {
+    # not maintained for now
     mkdir -p $2
     DATA_FILE=$2/last
     info "Data file: $DATA_FILE"
@@ -61,7 +62,16 @@ d7m5() {
     mkdir -p $T_DATA_DIR/{1..7}
     T_DATA_DIR=$T_DATA_DIR/`date -r $4 +%u`
     info "Data dir : $T_DATA_DIR"
-    DATA_FILE=$T_DATA_DIR/`date -r $(($4-($4%300))) +%H%M`
+    
+    # depending on a linux distro, "date" might require different options
+    date -r 123 > /dev/null
+    exit_status=$?
+    if test $exit_status -eq 0
+    then
+        DATA_FILE=$T_DATA_DIR/`date -r $(($4-($4%300))) +%H%M`
+    else
+        DATA_FILE=$T_DATA_DIR/`date -d@$(($4-($4%300))) +%H%M`
+    fi
     info "Data file: $DATA_FILE"
     touch $DATA_FILE
 
