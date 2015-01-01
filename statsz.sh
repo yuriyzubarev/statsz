@@ -32,6 +32,16 @@ info "Instructions: $INSTRUCTIONS"
 
 RESULT=`mktemp /tmp/XXXXXXXX`
 
+# depending on a linux distro, "date" might require different options
+date -r 123 > /dev/null
+exit_status=$?
+if test $exit_status -eq 0
+then
+    DATE_PARAMS="-r "
+else
+    DATE_PARAMS="-d@"
+fi
+
 stats() {
     if [ -s $1 ] 
     then
@@ -60,18 +70,10 @@ last_n() {
 d7m5() {
     T_DATA_DIR=$2/7d/5m
     mkdir -p $T_DATA_DIR/{1..7}
-    T_DATA_DIR=$T_DATA_DIR/`date -r $4 +%u`
+    T_DATA_DIR=$T_DATA_DIR/`date $DATE_PARAMS$4 +%u`
     info "Data dir : $T_DATA_DIR"
     
-    # depending on a linux distro, "date" might require different options
-    date -r 123 > /dev/null
-    exit_status=$?
-    if test $exit_status -eq 0
-    then
-        DATA_FILE=$T_DATA_DIR/`date -r $(($4-($4%300))) +%H%M`
-    else
-        DATA_FILE=$T_DATA_DIR/`date -d@$(($4-($4%300))) +%H%M`
-    fi
+    DATA_FILE=$T_DATA_DIR/`date $DATE_PARAMS$(($4-($4%300))) +%H%M`
     info "Data file: $DATA_FILE"
     touch $DATA_FILE
 
