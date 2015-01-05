@@ -24,9 +24,9 @@ END {
     p2index  = indexcheck(int((c * 2  / 100) + 0.5), c - 1);
     p9index  = indexcheck(int((c * 9  / 100) + 0.5), c - 1);
     p25index = indexcheck(int((c * 25 / 100) + 0.5), c - 1);
-    p75index = indexcheck(int((c * 75 / 100) + 0.5), c - 1);
-    p91index = indexcheck(int((c * 91 / 100) + 0.5), c - 1);
-    p98index = indexcheck(int((c * 98 / 100) + 0.5), c - 1);
+    p75index = indexcheck(int((c * 75 / 100) - 0.5), c - 1);
+    p91index = indexcheck(int((c * 91 / 100) - 0.5), c - 1);
+    p98index = indexcheck(int((c * 98 / 100) - 0.5), c - 1);
     
     print \
         "{ \"count\":",c,
